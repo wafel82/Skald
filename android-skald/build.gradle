@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.github.dcendents.android-maven'
 
 //================================================================================================//
 //                        _________ __            .__       .___                                  //
@@ -10,13 +11,43 @@ apply plugin: 'kotlin-android'
 //                              \/      \/     \/            \/                                   //
 //================================================================================================//
 
+// ===============================================================================================//
+// VERSIONING
+// ===============================================================================================//
+ext.versionMajor = 0
+ext.versionMinor = 0
+ext.versionPatch = 1
+ext.versionClassifier = ""
+ext.minimumSdkVersion = 14
+
+// ===============================================================================================//
+// MAVEN DEPLOY CONFIGURATION
+// ===============================================================================================//
+group = 'com.wojtek.wawerek'
+ext {
+    bintrayRepo = 'android'
+    publishedGroupId = 'com.wojtek.wawerek'
+    bintrayName = 'android-skald'
+    artifact = 'android-skald'
+    libraryVersion = generateVersionName()
+
+    libraryDescription = 'Yet another logging framework for Android'
+    siteUrl = 'https://github.com/wafel82/Skald'
+    gitUrl = 'git@github.com:wafel82/Skald.git'
+    licenseName = 'The MIT License (MIT)'
+    allLicenses = ["MIT"]
+}
+
+// ===============================================================================================//
+// ANDROID BUILD
+// ===============================================================================================//
 android {
     compileSdkVersion 26
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode generateVersionCode()
+        versionName generateVersionName()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -29,6 +60,9 @@ android {
     }
 }
 
+// ===============================================================================================//
+// DEPENDENCIES
+// ===============================================================================================//
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -37,3 +71,20 @@ dependencies {
 
 }
 
+// ===============================================================================================//
+// HELPERS
+// ===============================================================================================//
+private Integer generateVersionCode() {
+    return ext.minimumSdkVersion * 10000000 + ext.versionMajor * 10000 + ext.versionMinor * 100 + ext.versionPatch
+}
+
+private String generateVersionName() {
+    String versionName = "${ext.versionMajor}.${ext.versionMinor}.${ext.versionPatch}"
+    if (ext.versionClassifier != null && !ext.versionClassifier.isEmpty()) {
+        versionName = versionName + "-" + ext.versionClassifier
+    }
+    return versionName
+}
+
+
+apply from: '../bintray-upload.gradle'
