@@ -14,12 +14,14 @@ class SkaldDemoApplication: Application() {
                 toLogcat { withTag { "SKALD-DEMO-PKG" } }
                 withLevel { DEBUG }
                 withPath { "com.wafel.skald.demo" }
+                withPattern { "${it.simplePath} -> ${it.message}" }
             }
 
             writeSaga {
                 toLogcat { withTag { "SKALD-DEMO-CLS" } }
-                withLevel { INFO }
+                withLevel { DEBUG }
                 withPath { "com.wafel.skald.demo.MainActivity" }
+                withPattern { "[ THREAD: ${it.threadName} ] :: ${it.message}" }
             }
         }
     }
