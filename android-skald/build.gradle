@@ -15,8 +15,8 @@ apply plugin: 'com.github.dcendents.android-maven'
 // VERSIONING
 // ===============================================================================================//
 ext.versionMajor = 0
-ext.versionMinor = 0
-ext.versionPatch = 1
+ext.versionMinor = 1
+ext.versionPatch = 0
 ext.versionClassifier = ""
 ext.minimumSdkVersion = 14
 
