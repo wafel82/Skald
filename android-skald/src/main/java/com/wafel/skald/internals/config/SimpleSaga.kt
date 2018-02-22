@@ -3,11 +3,13 @@ package com.wafel.skald.internals.config
 import com.wafel.skald.api.LogLevel
 import com.wafel.skald.api.LogcatAppender
 import com.wafel.skald.api.Saga
+import com.wafel.skald.internals.patterns.AvailablePatterns
 
 internal class SimpleSaga : Saga() {
     private val appenders = mutableListOf<ScaldAppender>()
     private var logLevel = LogLevel.NONE
     private var path = ""
+    private var pattern = "{message}"
 
     override fun toLogcat(init: LogcatAppender.() -> Unit) {
         val appender = SimpleLogcatAppender()
@@ -23,6 +25,10 @@ internal class SimpleSaga : Saga() {
         this.path = path()
     }
 
+    override fun withPattern(pattern: (Patterns) -> String) {
+        this.pattern = pattern(AvailablePatterns)
+    }
+
     override fun getLevel(): LogLevel {
         return logLevel
     }
@@ -31,6 +37,9 @@ internal class SimpleSaga : Saga() {
         return path
     }
 
+    override fun getPattern(): String {
+        return pattern
+    }
     override fun getAppenders(): List<ScaldAppender> {
         return appenders
     }
