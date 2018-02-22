@@ -1,5 +1,6 @@
 package com.wafel.skald.api
 
+import android.util.Patterns
 import com.wafel.skald.internals.config.SimpleSkald
 import com.wafel.skald.internals.config.ScaldAppender
 
@@ -50,7 +51,7 @@ abstract class Saga {
      * Function configures log level to be used with this Saga instance.
      * @param level - lambda returning one of the @LogLevel enum instance
      */
-    abstract fun withLevel(level: ()-> LogLevel)
+    abstract fun withLevel(level: () -> LogLevel)
 
     /**
      * Function configures path to be used with this Saga instance. Provided path will be compared
@@ -58,9 +59,24 @@ abstract class Saga {
      * with Saga path - then saga will be used by this logger.
      *@param path - lambda returning path to be configured.
      */
-    abstract fun withPath(path: ()->String)
+    abstract fun withPath(path: () -> String)
+
+    /**
+     * Function configures pattern to be used to construct log message
+     */
+    abstract fun withPattern(pattern: (Patterns) -> String)
+
+    interface Patterns {
+    val threadName: String
+    val message: String
+    val fullPath: String
+    val simplePath: String
+}
+
+    // internal api methods:
     internal abstract fun getLevel(): LogLevel
     internal abstract fun getPath(): String
+    internal abstract fun getPattern(): String
     internal abstract fun getAppenders(): List<ScaldAppender>
 }
 
