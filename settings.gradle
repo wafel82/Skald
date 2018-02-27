@@ -1,1 +1,1 @@
-include ':android-skald', ':skald-demo', ':skald-logcat-plugin'
+include ':skald-kotlin', ':skald-demo', ':skald-logcat-plugin'
