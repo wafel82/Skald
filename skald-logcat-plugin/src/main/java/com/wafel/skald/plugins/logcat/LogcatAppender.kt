@@ -1,7 +1,6 @@
 package com.wafel.skald.plugins.logcat
 
 import android.util.Log
-import com.wafel.skald.api.Saga
 import com.wafel.skald.api.SkaldAppender
 
 /**

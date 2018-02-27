@@ -1,8 +1,5 @@
 package com.wafel.skald.api
 
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.icu.lang.UCharacter.GraphemeClusterBreak.V
-import android.util.Patterns
 import com.wafel.skald.internals.config.SimpleSkald
 
 
