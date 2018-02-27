@@ -1,7 +1,6 @@
 package com.wafel.skald.internals.config
 
 import com.wafel.skald.api.LogLevel
-import com.wafel.skald.api.LogcatAppender
 import com.wafel.skald.api.Saga
 import com.wafel.skald.api.SkaldAppender
 import com.wafel.skald.internals.patterns.AvailablePatterns
@@ -18,11 +17,6 @@ internal class SimpleSaga : Saga() {
         appenders.add(appender)
     }
 
-    override fun toLogcat(init: LogcatAppender.() -> Unit) {
-        val appender = SimpleLogcatAppender()
-        appender.init()
-        appenders.add(appender)
-    }
 
     override fun withLevel(level: ()-> LogLevel) {
         this.logLevel = level()

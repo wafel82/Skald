@@ -43,13 +43,6 @@ interface Skald {
  */
 abstract class Saga {
     /**
-     * Function adds Logcat appender to this Saga instance.
-     * @param init - function type with LogcatAppender instance as a receiver. Inside this function
-     * you can refer to all LogcatAppender's public method without 'this.' prefix.
-     */
-    abstract fun toLogcat(init: LogcatAppender.() -> Unit)
-
-    /**
      * API method for plugins integration. It allows to initialize appender and
      * to add it to this Saga instance.
      * @param appender - instance of appender to be configured and added to Saga
@@ -93,14 +86,5 @@ abstract class Saga {
     internal abstract fun getAppenders(): List<SkaldAppender>
 }
 
-/**
- * Logcat appender configuration
- */
-interface LogcatAppender {
-    /**
-     * Function configures tag to be used when logging to logcat.
-     * @param tag - lambda returning tag string to be used.
-     */
-    fun withTag(tag: ()->String)
-}
+
 

@@ -1,10 +1,13 @@
-package com.wafel.skald.internals.config
+package com.wafel.skald.plugins.logcat
 
 import android.util.Log
-import com.wafel.skald.api.LogcatAppender
+import com.wafel.skald.api.Saga
 import com.wafel.skald.api.SkaldAppender
 
-internal class SimpleLogcatAppender : LogcatAppender, SkaldAppender {
+/**
+ * Main Logcat Appender implementation class. It writes all log messages to logcat
+ */
+class LogcatAppender : LogcatAppenderConfig, SkaldAppender {
     private var tag = "SCALD"
     override fun withTag(tag: ()->String) {
         this.tag = tag()

@@ -4,6 +4,7 @@ import android.app.Application
 import com.wafel.skald.api.LogLevel.DEBUG
 import com.wafel.skald.api.LogLevel.INFO
 import com.wafel.skald.api.skald
+import com.wafel.skald.plugins.logcat.toLogcat
 
 class SkaldDemoApplication: Application() {
     override fun onCreate() {
