@@ -1,14 +1,47 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.github.dcendents.android-maven'
 
+// ===============================================================================================//
+// VERSIONING
+// ===============================================================================================//
+ext.versionMajor = 0
+ext.versionMinor = 1
+ext.versionPatch = 0
+ext.versionClassifier = ""
+ext.minimumSdkVersion = 9
+
+
+// ===============================================================================================//
+// MAVEN DEPLOY CONFIGURATION
+// ===============================================================================================//
+group = 'com.wojtek.wawerek'
+ext {
+    bintrayRepo = 'android'
+    publishedGroupId = 'com.wojtek.wawerek'
+    bintrayName = 'skald-logcat-plugin'
+    artifact = 'skald-logcat-plugin'
+    libraryVersion = generateVersionName()
+
+    libraryDescription = 'Logcat Appender plugin for Skald logging framework'
+    siteUrl = 'https://github.com/wafel82/Skald'
+    gitUrl = 'git@github.com:wafel82/Skald.git'
+    licenseName = 'The MIT License (MIT)'
+    allLicenses = ["MIT"]
+}
+
+// ===============================================================================================//
+// ANDROID
+// ===============================================================================================//
 android {
     compileSdkVersion 26
 
     defaultConfig {
-        minSdkVersion 24
+        minSdkVersion 9
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode generateVersionCode()
+        versionName generateVersionName()
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -29,3 +62,21 @@ dependencies {
 
     compileOnly project(':skald-kotlin')
 }
+
+// ===============================================================================================//
+// HELPERS
+// ===============================================================================================//
+private Integer generateVersionCode() {
+    return ext.minimumSdkVersion * 10000000 + ext.versionMajor * 10000 + ext.versionMinor * 100 + ext.versionPatch
+}
+
+private String generateVersionName() {
+    String versionName = "${ext.versionMajor}.${ext.versionMinor}.${ext.versionPatch}"
+    if (ext.versionClassifier != null && !ext.versionClassifier.isEmpty()) {
+        versionName = versionName + "-" + ext.versionClassifier
+    }
+    return versionName
+}
+
+
+apply from: '../bintray-upload.gradle'
