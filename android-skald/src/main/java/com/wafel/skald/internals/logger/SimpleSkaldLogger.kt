@@ -2,8 +2,8 @@ package com.wafel.skald.internals.logger
 
 import com.wafel.skald.api.LogLevel
 import com.wafel.skald.api.Saga
+import com.wafel.skald.api.SkaldAppender
 import com.wafel.skald.api.SkaldLogger
-import com.wafel.skald.internals.config.ScaldAppender
 import com.wafel.skald.internals.config.SimpleSkald
 import com.wafel.skald.internals.patterns.patternHandlers
 
@@ -42,6 +42,6 @@ internal class SimpleSkaldLogger(private val loggerPath: String) : SkaldLogger {
         return logEntry
     }
 
-    private data class LogEntryConfig(val sagaPattern: String, val appenders: List<ScaldAppender>)
+    private data class LogEntryConfig(val sagaPattern: String, val appenders: List<SkaldAppender>)
 
 }

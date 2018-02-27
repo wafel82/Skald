@@ -1,6 +1,6 @@
-package com.wafel.skald.internals.config
+package com.wafel.skald.api
 
-internal interface ScaldAppender {
+interface SkaldAppender {
     fun wtf(message: String)
     fun error(message: String)
     fun warn(message: String)

@@ -2,8 +2,9 @@ package com.wafel.skald.internals.config
 
 import android.util.Log
 import com.wafel.skald.api.LogcatAppender
+import com.wafel.skald.api.SkaldAppender
 
-internal class SimpleLogcatAppender : LogcatAppender, ScaldAppender {
+internal class SimpleLogcatAppender : LogcatAppender, SkaldAppender {
     private var tag = "SCALD"
     override fun withTag(tag: ()->String) {
         this.tag = tag()

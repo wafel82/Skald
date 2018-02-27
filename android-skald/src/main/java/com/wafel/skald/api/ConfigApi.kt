@@ -1,8 +1,10 @@
 package com.wafel.skald.api
 
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.icu.lang.UCharacter.GraphemeClusterBreak.V
 import android.util.Patterns
 import com.wafel.skald.internals.config.SimpleSkald
-import com.wafel.skald.internals.config.ScaldAppender
+
 
 /**
  * Logging levels to be used when configuring skald
@@ -48,6 +50,17 @@ abstract class Saga {
     abstract fun toLogcat(init: LogcatAppender.() -> Unit)
 
     /**
+     * API method for plugins integration. It allows to initialize appender and
+     * to add it to this Saga instance.
+     * @param appender - instance of appender to be configured and added to Saga
+     * @param init - function type with ScaldAppender instance as a receiver. Inside this function
+     * you can refer to all appender's public method without 'this.' prefix.
+     */
+    abstract fun <T: SkaldAppender> to(appender: T, init: T.() -> Unit)
+
+
+
+    /**
      * Function configures log level to be used with this Saga instance.
      * @param level - lambda returning one of the @LogLevel enum instance
      */
@@ -77,7 +90,7 @@ abstract class Saga {
     internal abstract fun getLevel(): LogLevel
     internal abstract fun getPath(): String
     internal abstract fun getPattern(): String
-    internal abstract fun getAppenders(): List<ScaldAppender>
+    internal abstract fun getAppenders(): List<SkaldAppender>
 }
 
 /**
