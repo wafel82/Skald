@@ -1,0 +1,54 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply plugin: 'com.github.dcendents.android-maven'
+
+// ===============================================================================================//
+// VERSIONING
+// ===============================================================================================//
+ext.versionMajor = 0
+ext.versionMinor = 1
+ext.versionPatch = 0
+ext.versionClassifier = ""
+ext.minimumSdkVersion = 9
+
+// ===============================================================================================//
+// MAVEN DEPLOY CONFIGURATION
+// ===============================================================================================//
+group = 'com.wojtek.wawerek'
+ext {
+    bintrayRepo = 'android'
+    publishedGroupId = 'com.wojtek.wawerek'
+    bintrayName = 'skald-file-plugin'
+    artifact = 'skald-file-plugin'
+    libraryVersion = generateVersionName()
+    libraryDescription = 'File appender plugin for Skald logging framework'
+    siteUrl = 'https://github.com/wafel82/Skald'
+    gitUrl = 'git@github.com:wafel82/Skald.git'
+    licenseName = 'The MIT License (MIT)'
+    allLicenses = ["MIT"]
+}
+
+
+// ===============================================================================================//
+// DEPENDENCIES
+// ===============================================================================================//
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    compileOnly project(':skald-kotlin')
+}
+
+// ===============================================================================================//
+// HELPERS
+// ===============================================================================================//
+private String generateVersionName() {
+    String versionName = "${ext.versionMajor}.${ext.versionMinor}.${ext.versionPatch}"
+    if (ext.versionClassifier != null && !ext.versionClassifier.isEmpty()) {
+        versionName = versionName + "-" + ext.versionClassifier
+    }
+    return versionName
+}
+
+
+apply from: '../bintray-upload.gradle'
