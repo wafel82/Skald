@@ -7,7 +7,7 @@ import com.wafel.skald.internals.patterns.AvailablePatterns
 
 internal class SimpleSaga : Saga() {
     private val appenders = mutableListOf<SkaldAppender>()
-    private var logLevel = LogLevel.NONE
+    private var logLevel = LogLevel.TRACE
     private var path = ""
     private var pattern = "{message}"
 
