@@ -7,7 +7,7 @@ import com.wafel.skald.api.SkaldAppender
  * Main Logcat Appender implementation class. It writes all log messages to logcat
  */
 class LogcatAppender : LogcatAppenderConfig, SkaldAppender {
-    private var tag = "SCALD"
+    private var tag = "SKALD"
     override fun withTag(tag: ()->String) {
         this.tag = tag()
     }
