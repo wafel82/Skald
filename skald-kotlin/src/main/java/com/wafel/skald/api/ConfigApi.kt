@@ -17,9 +17,9 @@ enum class LogLevel { NONE, WTF, ERROR, WARN, INFO, DEBUG, TRACE }
  * @return - configured skald instance
  */
 fun skald(init: Skald.()->Unit): Skald {
-    val scaldConfiguration = SimpleSkald()
-    scaldConfiguration.init()
-    return scaldConfiguration
+    val skaldConfiguration = SimpleSkald()
+    skaldConfiguration.init()
+    return skaldConfiguration
 }
 
 /**
