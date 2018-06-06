@@ -1,9 +1,6 @@
 package com.wafel.skald.internals.logger
 
-import com.wafel.skald.api.LogLevel
-import com.wafel.skald.api.Saga
-import com.wafel.skald.api.SkaldAppender
-import com.wafel.skald.api.SkaldLogger
+import com.wafel.skald.api.*
 import com.wafel.skald.internals.config.SimpleSkald
 import com.wafel.skald.internals.patterns.patternHandlers
 
@@ -16,32 +13,42 @@ internal class SimpleSkaldLogger(private val loggerPath: String) : SkaldLogger {
     private val debugLogEntryConfigs    = sagas.toAppendersByLogLevel(LogLevel.DEBUG)
     private val traceLogEntryConfigs    = sagas.toAppendersByLogLevel(LogLevel.TRACE)
 
-    override fun wtf(message: String)   = wtfLogEntryConfigs.forEach { (sagaPattern, appenders) -> evaluateLogEntry(sagaPattern, message).let { entry -> appenders.forEach { it.wtf(entry) } } }
+    override fun wtf(message: Any) = wtfLogEntryConfigs.forEach { evaluateLogEntry(it.sagaPattern, message, it.serializers, it.defaultSerializer).let { entry -> it.appenders.forEach { it.wtf(entry) } } }
 
-    override fun error(message: String) = errorLogEntryConfigs.forEach { (sagaPattern, appenders) -> evaluateLogEntry(sagaPattern, message).let { entry -> appenders.forEach { it.error(entry) } } }
+    override fun error(message: Any) = errorLogEntryConfigs.forEach { evaluateLogEntry(it.sagaPattern, message, it.serializers, it.defaultSerializer).let { entry -> it.appenders.forEach { it.error(entry) } } }
 
-    override fun warn(message: String)  = warnLogEntryConfigs.forEach { (sagaPattern, appenders) -> evaluateLogEntry(sagaPattern, message).let { entry -> appenders.forEach { it.warn(entry) } } }
+    override fun warn(message: Any) = warnLogEntryConfigs.forEach { evaluateLogEntry(it.sagaPattern, message, it.serializers, it.defaultSerializer).let { entry -> it.appenders.forEach { it.warn(entry) } } }
 
-    override fun info(message: String)  = infoLogEntryConfigs.forEach { (sagaPattern, appenders) -> evaluateLogEntry(sagaPattern, message).let { entry -> appenders.forEach { it.info(entry) } } }
+    override fun info(message: Any) = infoLogEntryConfigs.forEach { evaluateLogEntry(it.sagaPattern, message, it.serializers, it.defaultSerializer).let { entry -> it.appenders.forEach { it.info(entry) } } }
 
-    override fun debug(message: String) = debugLogEntryConfigs.forEach { (sagaPattern, appenders) -> evaluateLogEntry(sagaPattern, message).let { entry -> appenders.forEach { it.debug(entry) } } }
+    override fun debug(message: Any) = debugLogEntryConfigs.forEach { evaluateLogEntry(it.sagaPattern, message, it.serializers, it.defaultSerializer).let { entry -> it.appenders.forEach { it.debug(entry) } } }
 
-    override fun trace(message: String) = traceLogEntryConfigs.forEach { (sagaPattern, appenders) -> evaluateLogEntry(sagaPattern, message).let { entry -> appenders.forEach { it.trace(entry) } } }
+    override fun trace(message: Any) = traceLogEntryConfigs.forEach { evaluateLogEntry(it.sagaPattern, message, it.serializers, it.defaultSerializer).let { entry -> it.appenders.forEach { it.trace(entry) } } }
 
     private fun List<Saga>.filterApplicableSagas(path: String) = this
             .filter { path.startsWith(it.getPath()) }
 
     private fun List<Saga>.toAppendersByLogLevel(logLevel: LogLevel) = this
             .filter { it.getLevel() >= logLevel }
-            .map { saga -> LogEntryConfig(saga.getPattern(), saga.getAppenders())  }
+            .map { saga -> LogEntryConfig(saga.getPattern(), saga.getAppenders(), saga.getSerializers(), saga.getDefaultSerializer()) }
 
-
-    private fun evaluateLogEntry(sagaPattern: String,  message: String): String {
+    private fun evaluateLogEntry(sagaPattern: String, message: Any, serializers: List<SerializerConfig<*>>, defaultSerializer: (Any) -> String ): String {
+        val serializedMessage = serialize(message, serializers, defaultSerializer)
         var logEntry: String = sagaPattern
-        patternHandlers.forEach { logEntry = it.handle(logEntry, loggerPath, message) }
+        patternHandlers.forEach { logEntry = it.handle(logEntry, loggerPath, serializedMessage) }
         return logEntry
     }
 
-    private data class LogEntryConfig(val sagaPattern: String, val appenders: List<SkaldAppender>)
+    @Suppress("UNCHECKED_CAST")
+    private fun serialize(message: Any, serializers: List<SerializerConfig<*>>, defaultSerializer: (Any) -> String): String =
+            serializers.find { it.typeToken == message::class.java }?.let {
+                (it.serializer as (Any) -> String)(message)
+            } ?: defaultSerializer(message)
+
+    private data class LogEntryConfig(val sagaPattern: String,
+                                      val appenders: List<SkaldAppender>,
+                                      val serializers: List<SerializerConfig<*>>,
+                                      val defaultSerializer: (Any) -> String)
+
 
 }
