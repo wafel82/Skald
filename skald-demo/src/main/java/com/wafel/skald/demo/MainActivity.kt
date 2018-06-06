@@ -11,6 +11,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        logger.debug("Hello Skald!")
+        logger.debug("Hello Skald as a String!")
+        logger.debug(43110)
+        logger.debug(MyCustomClass("My custom class message!", 666))
     }
 }
