@@ -45,7 +45,6 @@ ext {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
 
 }
@@ -54,7 +53,7 @@ dependencies {
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
 buildscript {
-    ext.kotlin_version = '1.2.21'
+    ext.kotlin_version = '1.2.41'
     repositories {
         mavenCentral()
     }

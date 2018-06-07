@@ -22,10 +22,10 @@ fun createLogger(clazz: Class<*>): SkaldLogger = SimpleSkaldLogger(clazz.canonic
  * Skald logger interface. Use its approproate methods in logging entry  points
  */
 interface SkaldLogger {
-    fun wtf(message: String)
-    fun error(message: String)
-    fun warn(message: String)
-    fun info(message: String)
-    fun debug(message: String)
-    fun trace(message: String)
+    fun wtf(message: Any)
+    fun error(message: Any)
+    fun warn(message: Any)
+    fun info(message: Any)
+    fun debug(message: Any)
+    fun trace(message: Any)
 }
