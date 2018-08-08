@@ -1,1 +1,1 @@
-include ':skald-kotlin', ':skald-demo', ':skald-logcat-plugin'
+include ':skald-kotlin', ':skald-demo', ':skald-logcat-plugin', ':skald-console-plugin'
