@@ -1,6 +1,7 @@
 package com.wafel.skald.api
 
 import com.wafel.skald.internals.config.SimpleSkald
+import com.wafel.skald.internals.patterns.PatternHandler
 
 /**
  * Logging levels to be used when configuring skald
@@ -93,6 +94,7 @@ abstract class Saga {
     internal abstract fun getAppenders(): List<SkaldAppender>
     internal abstract fun getSerializers(): List<SerializerConfig<*>>
     internal abstract fun getDefaultSerializer(): (Any) -> String
+    internal abstract fun getPatternHandlers(): List<PatternHandler>
 }
 
 /**
