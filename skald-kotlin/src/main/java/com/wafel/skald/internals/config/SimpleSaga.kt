@@ -16,7 +16,7 @@ internal class SimpleSaga : Saga() {
     private var pattern = "{message}"
     private var serializers = emptyList<SerializerConfig<*>>()
     private var defaultSerializer: (Any) -> String = { it.toString() }
-    private val timestampFormatter: SimpleDateFormat = SimpleDateFormat("HH:mm:ss.SSS")
+    private var timestampFormatter: SimpleDateFormat = SimpleDateFormat("HH:mm:ss.SSS")
     private val patternHandlers = listOf(
             PatternHandler(AvailablePatterns.message, { _, input -> input }),
             PatternHandler(AvailablePatterns.threadName, { _, _ ->Thread.currentThread().name }),
@@ -39,6 +39,10 @@ internal class SimpleSaga : Saga() {
 
     override fun withPattern(pattern: (Patterns) -> String) {
         this.pattern = pattern(AvailablePatterns)
+    }
+
+    override fun withTimestampFormat(timestampFormat: () -> String) {
+        this.timestampFormatter = SimpleDateFormat(timestampFormat())
     }
 
     override fun getLevel(): LogLevel {

@@ -41,6 +41,7 @@ class SkaldDemoApplication : Application() {
                 toLogcat {
                     withTag { "SKALD-DEMO-TIMESTAMP" }
                     withLevel { TRACE }
+                    withTimestampFormat { "YYY-MM-dd HH:mm:ss.SSS" }
                     withPattern { "${it.timestamp} - ${it.message}" }
                 }
             }
