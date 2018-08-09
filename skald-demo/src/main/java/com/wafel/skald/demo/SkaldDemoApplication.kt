@@ -45,6 +45,15 @@ class SkaldDemoApplication : Application() {
                     withPattern { "${it.timestamp} - ${it.message}" }
                 }
             }
+
+            writeSaga {
+                toLogcat {
+                    withTag { "SKALD-DEMO-LOG-TAG" }
+                    withLevel { TRACE }
+                    withTimestampFormat { "YYY-MM-dd HH:mm:ss.SSS" }
+                    withPattern { "${it.levelTag} - ${it.message}" }
+                }
+            }
         }
     }
 }

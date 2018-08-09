@@ -1,6 +1,12 @@
 package com.wafel.skald.internals.patterns
 
-internal class PatternHandler(private val tag: String, private val value: (path: String, input: String)->String) {
-    fun handle(sagaPattern: String, loggerPath: String, input: String) =
-            sagaPattern.replace(tag, value(loggerPath, input))
+import com.wafel.skald.api.LogLevel
+
+internal class PatternHandler(private val tag: String, private val value: (PatternHandlerData)->String) {
+    fun handle(sagaPattern: String, patterHandlerData: PatternHandlerData) =
+            sagaPattern.replace(tag, value(patterHandlerData))
+
+    data class PatternHandlerData(val sagaPath: String,
+                                  val userInput: String,
+                                  val logLevel: LogLevel)
 }

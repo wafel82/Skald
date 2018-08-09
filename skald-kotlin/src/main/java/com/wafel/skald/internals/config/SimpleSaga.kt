@@ -1,28 +1,42 @@
 package com.wafel.skald.internals.config
 
 import com.wafel.skald.api.LogLevel
+import com.wafel.skald.api.LogLevel.*
 import com.wafel.skald.api.Saga
 import com.wafel.skald.api.SerializerConfig
 import com.wafel.skald.api.SkaldAppender
 import com.wafel.skald.internals.patterns.AvailablePatterns
+import com.wafel.skald.internals.patterns.DefaultLogTags
 import com.wafel.skald.internals.patterns.PatternHandler
 import java.text.SimpleDateFormat
 import java.util.*
 
 internal class SimpleSaga : Saga() {
     private val appenders = mutableListOf<SkaldAppender>()
-    private var logLevel = LogLevel.NONE
+    private var logLevel = NONE
     private var path = ""
     private var pattern = "{message}"
     private var serializers = emptyList<SerializerConfig<*>>()
     private var defaultSerializer: (Any) -> String = { it.toString() }
     private var timestampFormatter: SimpleDateFormat = SimpleDateFormat("HH:mm:ss.SSS")
+    private var logLevelTags: LogLevelTags = DefaultLogTags
     private val patternHandlers = listOf(
-            PatternHandler(AvailablePatterns.message, { _, input -> input }),
-            PatternHandler(AvailablePatterns.threadName, { _, _ ->Thread.currentThread().name }),
-            PatternHandler(AvailablePatterns.fullPath, { path, _ ->  path }),
-            PatternHandler(AvailablePatterns.simplePath, { path, _ ->  path.split(".").last() }),
-            PatternHandler(AvailablePatterns.timestamp, {_, _ -> timestampFormatter.format(Date())}))
+            PatternHandler(AvailablePatterns.message, { data -> data.userInput }),
+            PatternHandler(AvailablePatterns.threadName, { _ ->Thread.currentThread().name }),
+            PatternHandler(AvailablePatterns.fullPath, { data ->  data.sagaPath }),
+            PatternHandler(AvailablePatterns.simplePath, { data->  data.sagaPath.split(".").last() }),
+            PatternHandler(AvailablePatterns.timestamp, {_ -> timestampFormatter.format(Date())}),
+            PatternHandler(AvailablePatterns.levelTag, {data -> when(data.logLevel) {
+                WTF -> logLevelTags.wtfTag
+                ERROR -> logLevelTags.errorTag
+                WARN -> logLevelTags.warnTag
+                INFO -> logLevelTags.infoTag
+                DEBUG -> logLevelTags.debugTag
+                TRACE -> logLevelTags.traceTag
+                else -> ""
+            }
+            })
+            )
 
     override fun <T : SkaldAppender> to(appender: T, init: T.() -> Unit) {
         appender.init()

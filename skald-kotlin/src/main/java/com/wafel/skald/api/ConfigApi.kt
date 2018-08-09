@@ -91,6 +91,16 @@ abstract class Saga {
         val fullPath: String
         val simplePath: String
         val timestamp: String
+        val levelTag: String
+    }
+
+    interface LogLevelTags {
+        val wtfTag: String
+        val errorTag: String
+        val warnTag: String
+        val infoTag: String
+        val debugTag: String
+        val traceTag: String
     }
 
     // internal api methods:

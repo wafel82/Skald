@@ -8,4 +8,5 @@ internal object AvailablePatterns: Saga.Patterns {
     override val fullPath: String       = "{full-path}"
     override val simplePath: String     = "{simple-path}"
     override val timestamp: String      = "{timestamp}"
+    override val levelTag: String       = "{level-tag}"
 }
