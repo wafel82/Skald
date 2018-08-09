@@ -7,4 +7,5 @@ internal object AvailablePatterns: Saga.Patterns {
     override val message: String        = "{message}"
     override val fullPath: String       = "{full-path}"
     override val simplePath: String     = "{simple-path}"
+    override val timestamp: String      = "{timestamp}"
 }

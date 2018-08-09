@@ -85,6 +85,7 @@ abstract class Saga {
         val message: String
         val fullPath: String
         val simplePath: String
+        val timestamp: String
     }
 
     // internal api methods:

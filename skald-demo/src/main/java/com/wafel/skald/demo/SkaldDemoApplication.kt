@@ -36,6 +36,14 @@ class SkaldDemoApplication : Application() {
                         MyCustomClass::class.java serializeTo { "{CUSTOM CLASS: ${it.message} -> ${it.someValue}}" }
                 )
             }
+
+            writeSaga {
+                toLogcat {
+                    withTag { "SKALD-DEMO-TIMESTAMP" }
+                    withLevel { TRACE }
+                    withPattern { "${it.timestamp} - ${it.message}" }
+                }
+            }
         }
     }
 }
