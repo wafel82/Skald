@@ -6,7 +6,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 // VERSIONING
 // ===============================================================================================//
 ext.versionMajor = 0
-ext.versionMinor = 1
+ext.versionMinor = 4
 ext.versionPatch = 0
 ext.versionClassifier = ""
 ext.minimumSdkVersion = 9
