@@ -11,6 +11,7 @@ internal class SimpleSaga : Saga() {
     private var logLevel = LogLevel.NONE
     private var path = ""
     private var pattern = "{message}"
+    private var enablePredicate: () -> Boolean = { true }
     private var serializers = emptyList<SerializerConfig<*>>()
     private var defaultSerializer: (Any) -> String = { it.toString() }
 
@@ -29,6 +30,10 @@ internal class SimpleSaga : Saga() {
 
     override fun withPattern(pattern: (Patterns) -> String) {
         this.pattern = pattern(AvailablePatterns)
+    }
+
+    override fun enableWhen(predicate: () -> Boolean) {
+        this.enablePredicate = predicate
     }
 
     override fun getLevel(): LogLevel {
@@ -54,4 +59,6 @@ internal class SimpleSaga : Saga() {
     override fun getSerializers(): List<SerializerConfig<*>> = serializers
 
     override fun getDefaultSerializer(): (Any) -> String = defaultSerializer
+
+    override fun getEnabledPredicate() = enablePredicate
 }

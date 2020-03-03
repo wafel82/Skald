@@ -14,6 +14,7 @@ class SkaldDemoApplication : Application() {
 
         skald {
             writeSaga {
+                enableWhen { false }
                 toLogcat { withTag { "SKALD-DEMO-PKG" } }
                 withLevel { DEBUG }
                 withPath { "com.wafel.skald.demo" }
@@ -21,6 +22,7 @@ class SkaldDemoApplication : Application() {
             }
 
             writeSaga {
+                enableWhen { false }
                 toLogcat { withTag { "SKALD-DEMO-CLS" } }
                 withLevel { DEBUG }
                 withPath { "com.wafel.skald.demo.MainActivity" }
@@ -28,6 +30,7 @@ class SkaldDemoApplication : Application() {
             }
 
             writeSaga {
+                enableWhen { BuildConfig.DEBUG }
                 toLogcat { withTag { "SKALD-DEMO-SERIALIZE" } }
                 withLevel { TRACE }
                 withPath { "com.wafel.skald.demo" }

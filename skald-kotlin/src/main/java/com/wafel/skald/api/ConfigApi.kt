@@ -66,6 +66,13 @@ abstract class Saga {
     abstract fun withPattern(pattern: (Patterns) -> String)
 
     /**
+     * Function configures
+     *
+     * @param predicate
+     */
+    abstract fun enableWhen(predicate: () -> Boolean)
+
+    /**
      * Allows to register serializers for custom classes.
      * Typically every log message is logged as a string, but sometimes it is needed to transform
      * a class object to a specific format - for example a JSON, XML, SOAP, or anything else.
@@ -88,19 +95,23 @@ abstract class Saga {
 
     // internal api methods:
     internal abstract fun getLevel(): LogLevel
+
     internal abstract fun getPath(): String
     internal abstract fun getPattern(): String
     internal abstract fun getAppenders(): List<SkaldAppender>
     internal abstract fun getSerializers(): List<SerializerConfig<*>>
     internal abstract fun getDefaultSerializer(): (Any) -> String
+    internal abstract fun getEnabledPredicate(): () -> Boolean
 }
 
 /**
  * Container class for custom serializers.
  * @see [serializeTo] for quick creation of this objects
  */
-data class SerializerConfig<T>(val typeToken: Class<T>,
-                               val serializer: (T) -> String)
+data class SerializerConfig<T>(
+    val typeToken: Class<T>,
+    val serializer: (T) -> String
+)
 
 /**
  * Creates objects of type [SerializerConfig].
